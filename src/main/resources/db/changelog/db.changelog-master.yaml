@@ -1,0 +1,97 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Sam Ng
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: number(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deal
+                  type: json
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: basket
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: basket_item
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: basket_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: count
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  constraints:
+                    nullable: false
+                  defaultValue: 0
+        - addUniqueConstraint:
+            tableName: basket_item
+            columnNames: basket_id,product_id
+        - addForeignKeyConstraint:
+            baseColumnNames: basket_id
+            baseTableName: basket_item
+            constraintName: fk_basket_item_basket
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedTableName: basket
+            referencedColumnNames: id
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: basket_item
+            constraintName: fk_basket_item_product
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedTableName: product
+            referencedColumnNames: id
+            validate: true
