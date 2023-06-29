@@ -1,5 +1,6 @@
 package com.example.electronicstore.deal;
 
+import com.example.electronicstore.basket.Basket;
 import com.example.electronicstore.basket.BasketItem;
 import com.example.electronicstore.product.Product;
 import jakarta.validation.constraints.Max;
@@ -44,5 +45,10 @@ public final class BuyXGetYOffAtNext extends Deal {
                 .multiply(BigDecimal.valueOf(offPercent), MathContext.DECIMAL64)
                 .divide(BigDecimal.valueOf(100L), MathContext.DECIMAL64);
         return new AppliedDeal(this, product.getId(), product.getName(), discount);
+    }
+
+    @Override
+    public FreeDeal calculate(Basket basket) {
+        return null;
     }
 }

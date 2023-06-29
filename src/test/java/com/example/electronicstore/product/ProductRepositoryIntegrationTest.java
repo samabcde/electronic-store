@@ -2,6 +2,7 @@ package com.example.electronicstore.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import com.example.electronicstore.deal.BuySomeGetSomeFree;
 import com.example.electronicstore.deal.BuyXGetYOffAtNext;
 import com.example.electronicstore.deal.Deal;
 import com.example.electronicstore.deal.DealType;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Stream;
 
 @SpringBootTest
@@ -44,6 +46,8 @@ class ProductRepositoryIntegrationTest {
                 arguments(switch (dealType) {
                     case NONE -> new None();
                     case BUY_X_GET_Y_OFF_AT_NEXT -> new BuyXGetYOffAtNext(1, 2);
+                    case BUY_SOME_GET_SOME_FREE ->
+                            new BuySomeGetSomeFree(Collections.emptySet(), Collections.emptyList());
                 }));
     }
 }

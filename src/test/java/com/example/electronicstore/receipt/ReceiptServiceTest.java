@@ -12,6 +12,7 @@ import com.example.electronicstore.deal.AppliedDeal;
 import com.example.electronicstore.deal.BuyXGetYOffAtNext;
 import com.example.electronicstore.deal.None;
 import com.example.electronicstore.product.Product;
+import com.example.electronicstore.product.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,11 +21,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ReceiptServiceTest {
     @Mock
     BasketService basketService;
+    @Mock
+    ProductRepository productRepository;
+
     @InjectMocks
     ReceiptService receiptService;
 
@@ -63,6 +68,34 @@ class ReceiptServiceTest {
                         new AppliedDeal(new BuyXGetYOffAtNext(2, 20), 2L, "keyboard", new BigDecimal("2.1"))
                 ),
                 new BigDecimal("56.9")
+        ), actual);
+    }
+
+    @Test
+    void Given_basketItemFullfillFreeDeal_When_calculateReceipt_Then_returnCalculatedReceiptWithFreeItem() {
+        Product mouse = new Product(3L, "mouse", new BigDecimal("8.5"), new None());
+        Product keyboard = new Product(4L, "keyboard", new BigDecimal("10.5"), new BuyXGetYOffAtNext(2, 20));
+        when(productRepository.findById(4L)).thenReturn(Optional.of(keyboard));
+        when(basketService.getBasket(1L)).thenReturn(new Basket(
+                1L,
+                "customer1",
+                List.of(
+                        new BasketItem(3L, new Basket(1L), mouse, 2, 1L)
+                )
+        ));
+
+        Receipt actual = receiptService.calculate(new ReceiptRequest(1L));
+
+        verify(basketService).getBasket(1L);
+        assertEquals(new Receipt(1L, "customer1",
+                List.of(
+                        new Purchase(3L, "mouse", new BigDecimal("8.5"), 2),
+                        new Purchase(4L, "keyboard", BigDecimal.ZERO, 1)
+                ),
+                List.of(
+//                        new AppliedDeal(new BuyXGetYOffAtNext(2, 20), 2L, "keyboard", new BigDecimal("2.1"))
+                ),
+                new BigDecimal("17.0")
         ), actual);
     }
 }
