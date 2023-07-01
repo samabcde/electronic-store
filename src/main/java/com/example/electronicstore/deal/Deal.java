@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = None.class, name = "NONE"),
         @JsonSubTypes.Type(value = BuyXGetYOffAtNext.class, name = "BUY_X_GET_Y_OFF_AT_NEXT"),
+        @JsonSubTypes.Type(value = BuySomeGetSomeFree.class, name = "BUY_SOME_GET_SOME_FREE"),
 })
 @Data
 public abstract sealed class Deal permits BuySomeGetSomeFree, BuyXGetYOffAtNext, None {

@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @SpringBootTest
@@ -47,7 +48,7 @@ class ProductRepositoryIntegrationTest {
                     case NONE -> new None();
                     case BUY_X_GET_Y_OFF_AT_NEXT -> new BuyXGetYOffAtNext(1, 2);
                     case BUY_SOME_GET_SOME_FREE ->
-                            new BuySomeGetSomeFree(Collections.emptySet(), Collections.emptyList());
+                            new BuySomeGetSomeFree(Set.of(1L), Collections.emptyList());
                 }));
     }
 }

@@ -1,17 +1,25 @@
 package com.example.electronicstore.deal;
 
 import com.example.electronicstore.basket.Basket;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
 public final class BuySomeGetSomeFree extends Deal {
     // e.g. Monitor and a Keyboard
-    private final Set<Long> broughtProductIds;
+    private Set<Long> broughtProductIds;
     // e.g. Free Headset
-    private final List<Long> freeProductIds;
+    private List<Long> freeProductIds;
+
+    public BuySomeGetSomeFree() {
+        super(DealType.BUY_SOME_GET_SOME_FREE);
+    }
 
     public BuySomeGetSomeFree(Set<Long> broughtProductIds, List<Long> freeProductIds) {
         super(DealType.BUY_SOME_GET_SOME_FREE);
